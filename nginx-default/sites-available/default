@@ -1,0 +1,37 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    index index.php index.html index.htm;
+    server_name server_domain_or_IP;
+    root /var/www;
+
+    location / {
+
+        rewrite ^/api/(.*)$ /back/$1 last;
+        location /back/ {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        rewrite ^/(.*)$ /front/$1 last;
+        location /front/ {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            include /etc/nginx/fastcgi_params;
+            try_files $uri /index.php =404;
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            # fastcgi_pass unix:/var/run/php5-fpm.sock;
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        }
+    }
+
+# Test regex & with if ...
+#    if ($request_filename ~* /api/(.*)$) {
+#        return 410;
+#    }
+
+}
