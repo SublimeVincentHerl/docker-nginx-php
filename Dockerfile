@@ -2,10 +2,11 @@ FROM library/ubuntu:latest
 
 RUN \
   apt-get update -y && \
-  apt-get install -y nginx php5-fpm php5-cli php5-mcrypt git && \
+  apt-get install -y nginx php5-fpm php5-cli php5-mcrypt git wget zsh && \
   rm -rf /var/lib/apt/lists/* && \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
   chown -R www-data:www-data /var/lib/nginx
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 
 # PHP not to try to execute a similar named script if the requested file name cannot be found.
 RUN echo "cgi.fix_pathinfo=0" >> /etc/php5/fpm/php.ini
@@ -28,7 +29,6 @@ COPY ./nginx-default/sites-available/* /etc/nginx/sites-available/
 RUN \
   service nginx reload && \
   service php5-fpm restart
-
 
 # restart the service nginx
 # service nginx restart
