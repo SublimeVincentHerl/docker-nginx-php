@@ -1,5 +1,10 @@
 FROM library/ubuntu:latest
 
+#GIT ENV RSA CONNECTION
+
+ENV KEY_HOST "github.com"
+ENV KEY_EMAIL "vincent.herlemont@sublimeskinz.com"
+
 RUN \
   apt-get update -y && \
   apt-get install -y nginx php5-fpm php5-cli php5-mcrypt git wget zsh && \
