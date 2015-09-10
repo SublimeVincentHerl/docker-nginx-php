@@ -18,3 +18,10 @@ Step
 ### Quick install
 
 Open the graphic assistant Kitematic and search **sublimevincentherl/docker-nginx-php**
+
+
+### Hook
+
+ * `docker run <?image>`
+ * stop container
+ * `docker start -ai <?image>` # that restart the container current, this action gave the data :)
