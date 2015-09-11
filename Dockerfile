@@ -2,9 +2,6 @@ FROM library/ubuntu:latest
 
 #GIT ENV RSA CONNECTION
 
-ENV KEY_HOST "github.com"
-ENV KEY_EMAIL "vincent.herlemont@sublimeskinz.com"
-
 RUN \
   apt-get update -y && \
   apt-get install -y nginx php5-fpm php5-cli php5-mcrypt git wget zsh && \
@@ -46,18 +43,25 @@ RUN echo "listen = 127.0.0.1:9000" >> /etc/php5/fpm/pool.d/www.conf
 COPY ./nginx-default/www/ /var/www/
 COPY ./nginx-default/sites-available/* /etc/nginx/sites-available/
 
+# restart the service nginx
+# service nginx restart
 RUN \
   service nginx reload && \
   service php5-fpm restart
 
-# restart the service nginx
-# service nginx restart
+RUN \
+  php -r "readfile('https://getcomposer.org/installer');" | php && \
+  mv composer.phar /usr/local/bin/composer
+
+ENV GIT_NAME ""
+ENV GITHUB_EMAIL ""
+ENV DEPO_LARAVEL ""
 
 # Define mountable directories.
 VOLUME ["/etc/nginx/sites-enabled","/etc/nginx/sites-available","/etc/nginx/certs","/etc/nginx/conf.d","/var/log/nginx","/var/www"]
 
 # Define working directory.
-WORKDIR /etc/nginx
+WORKDIR /var/www/laravel
 
 COPY ./docker-start.sh /etc/nginx/
 RUN chmod 751 /etc/nginx/docker-start.sh
