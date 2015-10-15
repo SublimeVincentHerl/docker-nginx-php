@@ -2,7 +2,7 @@ FROM library/ubuntu:latest
 
 RUN \
   apt-get update -y && \
-  apt-get install -y nginx php5-fpm php5-cli php5-mcrypt git wget zsh && \
+  apt-get install -y nginx php5-fpm php5-cli php5-mysql php5-mcrypt git wget zsh && \
   rm -rf /var/lib/apt/lists/* && \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
   chown -R www-data:www-data /var/lib/nginx
