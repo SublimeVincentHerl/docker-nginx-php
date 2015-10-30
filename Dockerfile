@@ -37,6 +37,8 @@ RUN echo "listen = 127.0.0.1:9000" >> /etc/php5/fpm/pool.d/www.conf
 
 # to copy confs
 #
+docker run --name mysqldb -v /mnt/sda1/var/mysql_data:/var/lib/mysql -e MYSQL_USER=mysql -e MYSQL_PASSWORD=mysql -e MYSQL_DATABASE=sample -e MYSQL_ROOT_PASSWORD=supersecret -it -p 3306:3306 mysql
+
 
 COPY ./nginx-default/www/ /var/www/
 COPY ./nginx-default/sites-available/* /etc/nginx/sites-available/
